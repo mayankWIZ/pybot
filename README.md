@@ -92,6 +92,23 @@ Every turn, each module in `bot/modules/` may propose a reply, and an arbiter (`
 
 The modules themselves are another 81,000 lines.
 
+## Portfolio module (this fork)
+
+This fork teaches PyBot one more subject: Mayank Ranghadiya's CV. It powers the chat on his portfolio, with no LLM, no API key and no per-message cost.
+
+| Path | What it holds |
+|---|---|
+| `bot/portfolio/profile.json` | the CV as data: experience, skills, projects, services, education. Edit this to update the bot |
+| `bot/portfolio/engine.py` | rules that read a line and answer from the CV: skills checks, employers, projects, follow-ups ("tell me more") and a job-description fit check |
+| `bot/modules/portfolio.py` | the module that plugs the engine into PyBot's arbiter (PRIORITY 9200, so a CV fact is never outvoted by a general-knowledge guess) |
+
+It answers when a line names Mayank, or for every line when the host app sets `memory["portfolio_agent"]` (`welcome`, `career`, `project`, `client` or `research`). Everything else (small talk, cooking, trivia) falls through to the rest of PyBot.
+
+```sh
+python -m pybot -p "Who is Mayank Ranghadiya?"
+python -m unittest tests.test_portfolio
+```
+
 ## License
 
 Apache License 2.0. See [LICENSE](LICENSE).
